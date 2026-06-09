@@ -17,7 +17,7 @@
  * variable. This adapter never reads the key (nor any other secret) from
  * request input, query params, or hard-coded values.
  */
-import Anthropic from "@anthropic-ai/sdk";
+import { Anthropic } from "@anthropic-ai/sdk";
 import type {
   CompletionRequest,
   CompletionResult,
