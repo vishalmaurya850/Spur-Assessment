@@ -104,7 +104,7 @@ From the `backend/` directory:
 npm install
 
 # 2. Create your env file from the template and fill in real values
-cp .env.example .env        # on Windows PowerShell: Copy-Item .env.example .env
+md .env        # on Windows PowerShell: Copy-Item .env.example .env
 
 # 3. Generate the Prisma client and apply the schema (see Neon DB setup below)
 npm run prisma:migrate      # prisma migrate dev — creates/applies migrations (uses DIRECT_URL)
@@ -128,9 +128,10 @@ Available backend scripts (`backend/package.json`):
 | Script | Command | Purpose |
 |--------|---------|---------|
 | `npm run dev` | `tsx watch src/index.ts` | Run the API with hot reload |
-| `npm run build` | `tsc -p tsconfig.json` | Compile TypeScript to `dist/` |
+| `npm run build` | `prisma generate && tsc -p tsconfig.json` | Compile TypeScript to `dist/` |
 | `npm start` | `node dist/index.js` | Run the compiled server |
 | `npm run typecheck` | `tsc --noEmit` | Type-check without emitting |
+| `npm run postinstall` | `prisma generate` | Generate the typed Prisma client automatically after package installation |
 | `npm run prisma:generate` | `prisma generate` | Generate the typed Prisma client |
 | `npm run prisma:migrate` | `prisma migrate dev` | Create/apply migrations (dev) |
 
@@ -142,10 +143,8 @@ From the `frontend/` directory:
 # 1. Install dependencies
 npm install
 
-# 2. (Optional) point the widget at a non-default backend URL
-#    Defaults to http://localhost:3000 when VITE_API_BASE_URL is unset.
-#    Set it in a .env file or your shell, e.g.:
-#    VITE_API_BASE_URL=http://localhost:3000
+# 2. Set it in a .env file or your shell, e.g.:
+VITE_API_BASE_URL=http://localhost:3000
 
 # 3. Run the dev server
 npm run dev                 # vite dev
@@ -230,7 +229,7 @@ Frontend:
 
 | Variable | Required | Default | Purpose |
 |----------|----------|---------|---------|
-| `VITE_API_BASE_URL` | No | `http://localhost:3000` | Base URL the widget uses to reach the backend API. |
+| `VITE_API_BASE_URL` | Yes | `http://localhost:3000` | Base URL the widget uses to reach the backend API. |
 
 ---
 
