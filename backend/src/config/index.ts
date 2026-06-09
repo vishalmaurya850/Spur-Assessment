@@ -63,6 +63,12 @@ export interface AppConfig {
   readonly llmTimeoutMs: number;
   /** Server listening port. */
   readonly port: number;
+  /**
+   * Allowed CORS origins for browser clients. Empty array means "allow any
+   * origin" (reflects the request `Origin`); otherwise only listed origins are
+   * permitted. Sourced from `CORS_ALLOWED_ORIGINS` (comma-separated).
+   */
+  readonly allowedOrigins: readonly string[];
 }
 
 /** Environment source. Defaults to `process.env`; injectable for testing. */
@@ -168,6 +174,24 @@ function readProvider(env: EnvSource): LLMProvider {
 }
 
 /**
+ * Reads the optional `CORS_ALLOWED_ORIGINS` variable: a comma-separated list of
+ * origins permitted to call the API from a browser. Each entry is trimmed and
+ * has any trailing slash removed so it matches the browser-sent `Origin` header
+ * (which never includes a trailing slash). An unset/empty value yields an empty
+ * list, which the CORS middleware treats as "reflect any origin".
+ */
+function readAllowedOrigins(env: EnvSource): readonly string[] {
+  const raw = env.CORS_ALLOWED_ORIGINS;
+  if (raw === undefined || raw.trim().length === 0) {
+    return [];
+  }
+  return raw
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/+$/, ""))
+    .filter((origin) => origin.length > 0);
+}
+
+/**
  * Loads and validates all configuration from the given environment source.
  *
  * @param env Environment to read from. Defaults to `process.env`.
@@ -215,6 +239,11 @@ export function loadConfig(env: EnvSource = process.env): AppConfig {
   // 5. Server port.
   const port = readPort(env);
 
+  // 6. CORS allowed origins (optional). Comma-separated list; trailing slashes
+  //    are stripped so they match the browser-sent Origin header exactly. An
+  //    empty/unset value means "reflect any origin".
+  const allowedOrigins = readAllowedOrigins(env);
+
   return Object.freeze({
     provider,
     apiKey,
@@ -226,5 +255,6 @@ export function loadConfig(env: EnvSource = process.env): AppConfig {
     maxReplyTokens,
     llmTimeoutMs,
     port,
+    allowedOrigins,
   });
 }
