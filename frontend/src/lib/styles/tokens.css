@@ -1,0 +1,99 @@
+/*
+ * Genesis design tokens — premium light theme.
+ *
+ * An editorial precision palette: warm-gray canvas, white surfaces, indigo for
+ * interactive accents only. Declared on :root so every component can reference
+ * them via var(--token) regardless of Svelte's style scoping.
+ */
+
+:root {
+	/* Colors — surfaces */
+	--bg: #fafafa;
+	--surface: #ffffff;
+	--surface-alt: #f4f4f6;
+
+	/* Colors — interactive (indigo) */
+	--primary: #6366f1;
+	--primary-hover: #4f46e5;
+	--primary-tint: rgba(99, 102, 241, 0.08);
+	--primary-ring: rgba(99, 102, 241, 0.12);
+
+	/* Colors — text */
+	--text-primary: #0a0a0a;
+	--text-secondary: #6b6b6b;
+	--neutral: #9c9c9c;
+
+	/* Colors — lines */
+	--border: #e8e8ec;
+
+	/* Colors — semantic */
+	--success: #10b981;
+	--warning: #f59e0b;
+	--error: #ef4444;
+	--error-tint: rgba(239, 68, 68, 0.08);
+
+	/* Typography — families */
+	--font-display: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-code: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+	/* Typography — scale */
+	--text-subhead: 24px;
+	--text-section: 32px;
+	--text-body: 15px;
+	--text-small: 13px;
+	--text-caption: 12px;
+	--text-overline: 11px;
+
+	/* Spacing — 4px base */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
+	--space-10: 40px;
+	--space-12: 48px;
+	--space-16: 64px;
+
+	/* Radius */
+	--radius-chip: 4px;
+	--radius-control: 6px;
+	--radius-panel: 8px;
+	--radius-card: 12px;
+	--radius-full: 9999px;
+
+	/* Elevation */
+	--shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+	--shadow-primary: 0 4px 12px rgba(99, 102, 241, 0.35);
+	--shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.12);
+	--ring-focus: 0 0 0 3px var(--primary-ring);
+
+	/* Layout */
+	--conversation-width: 768px;
+	--nav-height: 56px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {
+	background: var(--bg);
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: var(--text-body);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
