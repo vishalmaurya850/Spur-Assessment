@@ -94,7 +94,7 @@ export function buildApp(config: AppConfig): Application {
   // Mounted at the root so its paths (/chat/message, /chat/:sessionId, /health)
   // resolve as designed. Note: no authentication middleware is mounted — the
   // API is intentionally unauthenticated for this exercise.
-  app.use(createChatRouter(conversationService, config.maxMessageChars));
+  app.use(createChatRouter(conversationService, config.maxMessageChars, config.allowedOrigins));
 
   return app;
 }
