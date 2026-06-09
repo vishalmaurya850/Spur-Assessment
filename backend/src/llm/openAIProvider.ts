@@ -13,7 +13,7 @@
  * variable. This adapter never reads the key (nor any other secret) from
  * request input, query params, or hard-coded values.
  */
-import OpenAI from "openai";
+import { OpenAI } from "openai";
 import type {
   CompletionRequest,
   CompletionResult,
