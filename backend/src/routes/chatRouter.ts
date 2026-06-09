@@ -17,6 +17,7 @@
 import express, { Router } from "express";
 import type { ConversationService } from "../conversation/conversationService.js";
 import { ChatController, chatErrorHandler } from "./chatController.js";
+import { createCorsMiddleware } from "./corsMiddleware.js";
 
 /**
  * Build an Express {@link Router} exposing the chat API.
@@ -25,15 +26,21 @@ import { ChatController, chatErrorHandler } from "./chatController.js";
  *                        to (injected, not constructed here).
  * @param maxMessageChars Configured max message length forwarded to the
  *                        validator for truncation.
- * @returns A router with JSON body parsing, the three chat routes, and the
- *          centralized error handler mounted last.
+ * @param allowedOrigins  CORS allow-list; empty means reflect any origin.
+ * @returns A router with CORS, JSON body parsing, the three chat routes, and
+ *          the centralized error handler mounted last.
  */
 export function createChatRouter(
   service: ConversationService,
   maxMessageChars: number,
+  allowedOrigins: readonly string[] = [],
 ): Router {
   const controller = new ChatController(service, maxMessageChars);
   const router = Router();
+
+  // CORS first so preflight OPTIONS requests and cross-origin responses get the
+  // required Access-Control-* headers before any other handling.
+  router.use(createCorsMiddleware(allowedOrigins));
 
   // Parse JSON request bodies. A malformed JSON payload surfaces as an error
   // forwarded to `chatErrorHandler`, which returns a user-safe response rather
