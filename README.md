@@ -9,6 +9,13 @@ grouped under a conversation/session, so history reloads on refresh.
 The system is deliberately layered for separation of concerns and extensibility, and
 the LLM vendor is swappable through configuration alone.
 
+> **⚠️ Note on running this app:** I do not have an Paid OpenAI or Anthropic API key, so I
+> was unable to run the app end-to-end against a live LLM provider — **no real LLM output
+> can be shown here**. The code paths that call the provider are fully implemented, but
+> without a valid `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` every turn falls back to the
+> graceful-degradation reply (see [Graceful LLM degradation](#trade-offs--scope-notes)).
+> To see real responses, supply a valid API key for the selected provider.
+
 ---
 
 ## Architecture overview
